@@ -2,9 +2,11 @@
 
 namespace Zaratedev;
 
+use Zaratedev\SessionManager as Session;
+
 class Authenticator
 {
-    protected $user;
+    protected static $user;
 
     public static function check()
     {
@@ -20,7 +22,7 @@ class Authenticator
         $data = Session::get('user_data');
 
         if (! is_null($data)) {
-            static::$user = new User($data);
+            return static::$user = new User($data);
         }
 
         return null;

@@ -4,10 +4,10 @@ namespace Zaratedev;
 
 class SessionManager
 {
-    protected static $data = [];
+    protected static $data = array();
     protected static $loaded = false;
 
-    public static function load()
+    protected static function load()
     {
         if (static::$loaded) {
             return;
