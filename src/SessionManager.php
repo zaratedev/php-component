@@ -2,28 +2,50 @@
 
 namespace Zaratedev;
 
+use Zaratedev\SessionFileDriver;
+
 class SessionManager
 {
-    protected static $data = array();
-    protected static $loaded = false;
+    /**
+     * @var array
+     */
+    protected $data = [];
 
-    protected static function load()
+    /**
+     * @var boolean
+     */
+    protected $loaded = false;
+
+    /**
+     * @var \Zaratedev\SessionFileDriver
+     */
+    protected $sessionFileDriver;
+
+    /**
+     * @param \Zaratedev\SessionFileDriver $driver
+     */
+    public function __construct(SessionFileDriver $driver)
     {
-        if (static::$loaded) {
+        $this->sessionFileDriver = $driver;
+    }
+
+    protected function load()
+    {
+        if ($this->loaded) {
             return;
         }
 
-        static::$data = SessionFileDriver::load();
+        $this->data = $this->sessionFileDriver->load();
 
-        static::$loaded = true;
+        $this->loaded = true;
     }
     
-    public static function get($key)
+    public function get($key)
     {
-        static::load();
+        $this->load();
 
-        return isset(static::$data[$key])
-            ? static::$data[$key]
+        return isset($this->data[$key])
+            ? $this->data[$key]
             : null;
     }
 }
